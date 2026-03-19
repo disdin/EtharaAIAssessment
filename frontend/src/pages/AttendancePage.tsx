@@ -2,7 +2,7 @@ import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { Link, useSearchParams } from 'react-router-dom'
 
 import { Alert, Button, EmptyState, Input, Select, Spinner } from '@/components/ui'
-import { ApiError, apiRequest } from '@/lib/api'
+import { apiRequest, isApiError } from '@/lib/api'
 import { fieldErrorsFrom422Body } from '@/lib/parseApiValidation'
 import type { AttendanceMarkPayload, AttendanceRecord } from '@/types/attendance'
 import type { Employee } from '@/types/employee'
@@ -53,7 +53,7 @@ export function AttendancePage() {
       setEmployeesState('ready')
     } catch (err: unknown) {
       setEmployeesState('error')
-      setEmployeesError(err instanceof ApiError ? err.message : 'Could not load employees')
+      setEmployeesError(isApiError(err) ? err.message : 'Could not load employees')
     }
   }, [])
 
@@ -108,7 +108,7 @@ export function AttendancePage() {
       setHistoryState('ready')
     } catch (err: unknown) {
       setHistoryState('error')
-      setHistoryError(err instanceof ApiError ? err.message : 'Could not load attendance')
+      setHistoryError(isApiError(err) ? err.message : 'Could not load attendance')
     }
   }, [historyEmployeeId, historyQueryString, historyExactDate, historyFrom, historyTo])
 
@@ -146,7 +146,7 @@ export function AttendancePage() {
         void fetchHistory()
       }
     } catch (err: unknown) {
-      if (err instanceof ApiError) {
+      if (isApiError(err)) {
         if (err.status === 422) {
           setMarkServerErrors(
             fieldErrorsFrom422Body(err.body) as Partial<Record<keyof AttendanceMarkPayload, string>>,

@@ -1,7 +1,7 @@
 import { type FormEvent, useCallback, useEffect, useState } from 'react'
 
 import { Alert, Button, EmptyState, Input, Spinner } from '@/components/ui'
-import { ApiError, apiRequest } from '@/lib/api'
+import { apiRequest, isApiError } from '@/lib/api'
 import { fieldErrorsFrom422Body } from '@/lib/parseApiValidation'
 import type { Employee, EmployeeCreatePayload } from '@/types/employee'
 
@@ -40,9 +40,9 @@ export function EmployeesPage() {
       const data = await apiRequest<Employee[]>('/api/employees')
       setEmployees(data)
       setListState('ready')
-    } catch (e) {
+    } catch (err: unknown) {
       setListState('error')
-      setListError(e instanceof ApiError ? e.message : 'Could not load employees')
+      setListError(isApiError(err) ? err.message : 'Could not load employees')
     }
   }, [])
 
@@ -84,17 +84,17 @@ export function EmployeesPage() {
       })
       setClientErrors({})
       await loadEmployees()
-    } catch (e) {
-      if (e instanceof ApiError) {
-        if (e.status === 422) {
-          setServerFieldErrors(fieldErrorsFrom422Body(e.body) as Partial<Record<keyof EmployeeCreatePayload, string>>)
+    } catch (err: unknown) {
+      if (isApiError(err)) {
+        if (err.status === 422) {
+          setServerFieldErrors(fieldErrorsFrom422Body(err.body) as Partial<Record<keyof EmployeeCreatePayload, string>>)
           setFormGlobalError(null)
-        } else if (e.status === 409) {
+        } else if (err.status === 409) {
           setFormGlobalError(
             'An employee with this ID or email already exists. Change one of them and try again.',
           )
         } else {
-          setFormGlobalError(e.message)
+          setFormGlobalError(err.message)
         }
       } else {
         setFormGlobalError('Something went wrong')
@@ -114,9 +114,9 @@ export function EmployeesPage() {
       })
       setDeleteTarget(null)
       await loadEmployees()
-    } catch (e) {
-      if (e instanceof ApiError) {
-        setDeleteError(e.message)
+    } catch (err: unknown) {
+      if (isApiError(err)) {
+        setDeleteError(err.message)
       } else {
         setDeleteError('Could not delete employee')
       }
