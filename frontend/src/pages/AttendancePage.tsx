@@ -51,9 +51,9 @@ export function AttendancePage() {
       const data = await apiRequest<Employee[]>('/api/employees')
       setEmployees(data)
       setEmployeesState('ready')
-    } catch (e) {
+    } catch (err: unknown) {
       setEmployeesState('error')
-      setEmployeesError(e instanceof ApiError ? e.message : 'Could not load employees')
+      setEmployeesError(err instanceof ApiError ? err.message : 'Could not load employees')
     }
   }, [])
 
@@ -106,9 +106,9 @@ export function AttendancePage() {
       )
       setHistoryRecords(data)
       setHistoryState('ready')
-    } catch (e) {
+    } catch (err: unknown) {
       setHistoryState('error')
-      setHistoryError(e instanceof ApiError ? e.message : 'Could not load attendance')
+      setHistoryError(err instanceof ApiError ? err.message : 'Could not load attendance')
     }
   }, [historyEmployeeId, historyQueryString, historyExactDate, historyFrom, historyTo])
 
@@ -145,18 +145,18 @@ export function AttendancePage() {
       if (historyEmployeeId === markEmployeeId) {
         void fetchHistory()
       }
-    } catch (e) {
-      if (e instanceof ApiError) {
-        if (e.status === 422) {
+    } catch (err: unknown) {
+      if (err instanceof ApiError) {
+        if (err.status === 422) {
           setMarkServerErrors(
-            fieldErrorsFrom422Body(e.body) as Partial<Record<keyof AttendanceMarkPayload, string>>,
+            fieldErrorsFrom422Body(err.body) as Partial<Record<keyof AttendanceMarkPayload, string>>,
           )
-        } else if (e.status === 404) {
+        } else if (err.status === 404) {
           setMarkGlobalError('Employee not found. Refresh the list or pick another person.')
-        } else if (e.status === 409) {
+        } else if (err.status === 409) {
           setMarkGlobalError('This day is already marked and cannot be changed (server rejected duplicate).')
         } else {
-          setMarkGlobalError(e.message)
+          setMarkGlobalError(err.message)
         }
       } else {
         setMarkGlobalError('Something went wrong')
