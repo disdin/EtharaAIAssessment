@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { Alert, Button, Spinner } from '@/components/ui'
-import { apiRequest, isApiError } from '@/lib/api'
-import type { DashboardSummary, EmployeeAttendanceStat } from '@/types/dashboard'
+import { Alert, Button, Spinner } from '../components/ui'
+import { apiRequest, isApiError } from '../lib/api'
+import type { DashboardSummary, EmployeeAttendanceStat } from '../types/dashboard'
 
-import '@/pages/DashboardPage.css'
+import './DashboardPage.css'
 
 type LoadState = 'loading' | 'error' | 'ready'
 
@@ -34,7 +34,11 @@ export function DashboardPage() {
       } catch (err: unknown) {
         if (!cancelled) {
           setState('error')
-          setError(isApiError(err) ? err.message : 'Could not load dashboard')
+          if (isApiError(err)) {
+            setError(err.message)
+          } else {
+            setError('Could not load dashboard')
+          }
         }
       }
     })()
@@ -54,7 +58,11 @@ export function DashboardPage() {
         setState('ready')
       } catch (err: unknown) {
         setState('error')
-        setError(isApiError(err) ? err.message : 'Could not load dashboard')
+        if (isApiError(err)) {
+          setError(err.message)
+        } else {
+          setError('Could not load dashboard')
+        }
       }
     })()
   }, [])

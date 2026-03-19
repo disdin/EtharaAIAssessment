@@ -1,11 +1,11 @@
 import { type FormEvent, useCallback, useEffect, useState } from 'react'
 
-import { Alert, Button, EmptyState, Input, Spinner } from '@/components/ui'
-import { apiRequest, isApiError } from '@/lib/api'
-import { fieldErrorsFrom422Body } from '@/lib/parseApiValidation'
-import type { Employee, EmployeeCreatePayload } from '@/types/employee'
+import { Alert, Button, EmptyState, Input, Spinner } from '../components/ui'
+import { apiRequest, isApiError } from '../lib/api'
+import { fieldErrorsFrom422Body } from '../lib/parseApiValidation'
+import type { Employee, EmployeeCreatePayload } from '../types/employee'
 
-import '@/pages/EmployeesPage.css'
+import './EmployeesPage.css'
 
 type ListState = 'loading' | 'error' | 'ready'
 
@@ -42,7 +42,11 @@ export function EmployeesPage() {
       setListState('ready')
     } catch (err: unknown) {
       setListState('error')
-      setListError(isApiError(err) ? err.message : 'Could not load employees')
+      if (isApiError(err)) {
+        setListError(err.message)
+      } else {
+        setListError('Could not load employees')
+      }
     }
   }, [])
 

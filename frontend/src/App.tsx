@@ -1,10 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
-import { AppLayout } from '@/layout/AppLayout'
-import { AttendancePage } from '@/pages/AttendancePage'
-import { DashboardPage } from '@/pages/DashboardPage'
-import { EmployeesPage } from '@/pages/EmployeesPage'
-import { HomePage } from '@/pages/HomePage'
+import { AppLayout } from './layout/AppLayout'
+import { AttendancePage } from './pages/AttendancePage'
+import { DashboardPage } from './pages/DashboardPage'
+import { EmployeesPage } from './pages/EmployeesPage'
+import { HomePage } from './pages/HomePage'
 
 export default function App() {
   return (

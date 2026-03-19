@@ -1,13 +1,13 @@
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
-import { Alert, Button, EmptyState, Input, Select, Spinner } from '@/components/ui'
-import { apiRequest, isApiError } from '@/lib/api'
-import { fieldErrorsFrom422Body } from '@/lib/parseApiValidation'
-import type { AttendanceMarkPayload, AttendanceRecord } from '@/types/attendance'
-import type { Employee } from '@/types/employee'
+import { Alert, Button, EmptyState, Input, Select, Spinner } from '../components/ui'
+import { apiRequest, isApiError } from '../lib/api'
+import { fieldErrorsFrom422Body } from '../lib/parseApiValidation'
+import type { AttendanceMarkPayload, AttendanceRecord } from '../types/attendance'
+import type { Employee } from '../types/employee'
 
-import '@/pages/AttendancePage.css'
+import './AttendancePage.css'
 
 function todayISODate(): string {
   const d = new Date()
@@ -53,7 +53,11 @@ export function AttendancePage() {
       setEmployeesState('ready')
     } catch (err: unknown) {
       setEmployeesState('error')
-      setEmployeesError(isApiError(err) ? err.message : 'Could not load employees')
+      if (isApiError(err)) {
+        setEmployeesError(err.message)
+      } else {
+        setEmployeesError('Could not load employees')
+      }
     }
   }, [])
 
@@ -108,7 +112,11 @@ export function AttendancePage() {
       setHistoryState('ready')
     } catch (err: unknown) {
       setHistoryState('error')
-      setHistoryError(isApiError(err) ? err.message : 'Could not load attendance')
+      if (isApiError(err)) {
+        setHistoryError(err.message)
+      } else {
+        setHistoryError('Could not load attendance')
+      }
     }
   }, [historyEmployeeId, historyQueryString, historyExactDate, historyFrom, historyTo])
 

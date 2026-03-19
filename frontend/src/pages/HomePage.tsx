@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { Alert, Button, Spinner } from '@/components/ui'
-import { apiRequest, isApiError } from '@/lib/api'
-import { getApiBaseUrl } from '@/lib/config'
+import { Alert, Button, Spinner } from '../components/ui'
+import { apiRequest, isApiError } from '../lib/api'
+import { getApiBaseUrl } from '../lib/config'
 
 type HealthState =
   | { status: 'loading' }
@@ -22,7 +22,10 @@ export function HomePage() {
         }
       } catch (err: unknown) {
         if (!cancelled) {
-          const message = isApiError(err) ? err.message : 'Unexpected error'
+          let message = 'Unexpected error'
+          if (isApiError(err)) {
+            message = err.message
+          }
           setHealth({ status: 'error', message })
         }
       }
@@ -65,12 +68,13 @@ export function HomePage() {
               setHealth({ status: 'loading' })
               void apiRequest<{ status: string }>('/health')
                 .then((payload) => setHealth({ status: 'ok', payload }))
-                .catch((err: unknown) =>
-                  setHealth({
-                    status: 'error',
-                    message: isApiError(err) ? err.message : 'Unexpected error',
-                  }),
-                )
+                .catch((err: unknown) => {
+                  let message = 'Unexpected error'
+                  if (isApiError(err)) {
+                    message = err.message
+                  }
+                  setHealth({ status: 'error', message })
+                })
             }}
           >
             Retry health check
