@@ -1,0 +1,11 @@
+# Netlify — set base directory to `frontend` in the UI, or deploy from repo with these defaults.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# SPA fallback (same intent as public/_redirects)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

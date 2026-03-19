@@ -1,0 +1,25 @@
+# Render Blueprint — FastAPI backend only.
+# After first deploy, set secrets in the Render dashboard:
+#   MONGODB_URI, MONGODB_DB_NAME, CORS_ORIGINS, (optional) DOCS_ENABLED, LOG_LEVEL, LOG_FORMAT
+#
+# Deploy the frontend separately (Vercel/Netlify) with VITE_API_URL = this service URL.
+
+services:
+  - type: web
+    name: hrms-lite-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: MONGODB_DB_NAME
+        value: hrms_lite
+      - key: DOCS_ENABLED
+        value: "false"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: LOG_FORMAT
+        value: json

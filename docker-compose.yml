@@ -1,0 +1,15 @@
+# Local MongoDB only — not for production deployment as-is.
+# Usage: from repo root, `docker compose up -d`
+# Then set backend `MONGODB_URI=mongodb://localhost:27017` (see backend/.env.example).
+
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - hrms_mongo_data:/data/db
+
+volumes:
+  hrms_mongo_data:

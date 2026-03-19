@@ -1,0 +1,180 @@
+/* HRMS Lite UI primitives — uses tokens from index.css */
+
+.hrms-btn {
+  font: var(--font-ui);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  line-height: 1.25;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.hrms-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.hrms-btn--primary {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+}
+.hrms-btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.hrms-btn--secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.hrms-btn--secondary:hover:not(:disabled) {
+  background: var(--color-bg-muted);
+}
+
+.hrms-btn--danger {
+  background: var(--color-danger);
+  color: #fff;
+}
+.hrms-btn--danger:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.hrms-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: 28rem;
+}
+
+.hrms-label {
+  font: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.hrms-input,
+.hrms-select {
+  font: var(--font-ui);
+  font-size: var(--text-sm);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.hrms-input:focus-visible,
+.hrms-select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.hrms-input--error,
+.hrms-select--error {
+  border-color: var(--color-danger);
+}
+
+.hrms-field-error {
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  margin: 0;
+}
+
+.hrms-spinner-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hrms-spinner {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: hrms-spin 0.7s linear infinite;
+}
+
+@keyframes hrms-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hrms-alert {
+  font: var(--font-ui);
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.hrms-alert--error {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
+}
+
+.hrms-alert--success {
+  background: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
+}
+
+.hrms-alert--info {
+  background: var(--color-info-bg);
+  border-color: var(--color-info-border);
+  color: var(--color-info-text);
+}
+
+.hrms-empty {
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-muted);
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.hrms-empty h2 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.hrms-empty p {
+  margin: 0 0 var(--space-4);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}

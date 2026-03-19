@@ -1,0 +1,10 @@
+# Railway — set service root to `backend` in the project settings, or use a monorepo deploy target.
+# Required variables in Railway: MONGODB_URI, CORS_ORIGINS, MONGODB_DB_NAME (optional).
+
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+healthcheckPath = "/health"
+restartPolicyType = "on_failure"
